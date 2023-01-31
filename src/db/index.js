@@ -16,12 +16,12 @@ export const init = () => {
   return promise;
 };
 
-export const insertPlace = (title, image, address, coords) => {
+export const addToCart = (item) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "INSERT INTO places (title, image, address, coords) VALUES (?, ?, ?, ?);",
-        [title, image, address, JSON.stringify(coords)],
+        "INSERT INTO places (item) VALUES (?);",
+        [item],
         (_, result) => resolve(result),
         (_, err) => reject(err)
       );
@@ -31,7 +31,7 @@ export const insertPlace = (title, image, address, coords) => {
   return promise;
 };
 
-export const getPlaces = () => {
+export const removeFromCart = (id) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -43,4 +43,19 @@ export const getPlaces = () => {
     });
   });
   return promise;
+};
+
+export const confirmCart = (items, total) => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "INSERT INTO places (item) VALUES (?);",
+            [items, total],
+            (_, result) => resolve(result),
+            (_, err) => reject(err)
+          );
+        });
+      });
+    
+    return promise;
 };

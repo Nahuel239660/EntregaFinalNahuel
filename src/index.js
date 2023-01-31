@@ -1,22 +1,13 @@
-import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 
-import { init } from "./db";
-import AppNavigator from "./navigation/index";
-import { store } from "./store";
+import placeReducer from "./place.slice";
 
-init()
-  .then(() => {
-    console.log("Initialized database");
-  })
-  .catch((err) => {
-    console.log("Initializing db failed.");
-    console.log(err);
-  });
-
-export default function App() {
-  return (
-    <Provider store={store}>
-      <AppNavigator />
-    </Provider>
-  );
-}
+export const store = configureStore({
+  reducer: {
+    place: placeReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
